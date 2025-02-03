@@ -11,6 +11,9 @@ export default async function ReviewDetails({
     if(parseInt(reviewid) > 1000){
         notFound();
     }
+    else if(parseInt(reviewid) === 1){
+        throw new Error('Error in loading');
+    }
     return <div>
         <h1>Reivew id {reviewid} for product {productid}</h1>
     </div>;

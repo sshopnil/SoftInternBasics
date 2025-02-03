@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 
 import GlobalNavigation from "./global-navigation";
-
+import { ErrorWrapper } from "./error-wrapper";
 
 export const metadata:Metadata = {
   title: {
@@ -30,7 +30,9 @@ export default function RootLayout({
           Header
         </header>
         <GlobalNavigation/>
+        <ErrorWrapper>
         {children}
+        </ErrorWrapper>
         <footer
           style={{
             backgroundColor: 'aliceblue',

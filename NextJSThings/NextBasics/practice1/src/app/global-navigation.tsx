@@ -8,6 +8,7 @@ const navLinks = [
     {name: "Home", href:'/'},
     {name: "Register", href:'/register'},
     {name: "Login", href:'/login'},
+    {name: "Complex Dashboard", href:'/complex-dashboard'},
   ]
 
 export default function GlobalNavigation(){

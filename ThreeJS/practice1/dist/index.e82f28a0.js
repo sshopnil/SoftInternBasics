@@ -606,6 +606,7 @@ var _starsJpg = require("../img/stars.jpg");
 var _starsJpgDefault = parcelHelpers.interopDefault(_starsJpg);
 var _gltfloaderJs = require("three/examples/jsm/loaders/GLTFLoader.js");
 const monkeyUrl = new URL(require("78e3d5acc9e999e3"));
+const headURL = new URL(require("dcc313f816ceff2e"));
 const renderer = new _three.WebGLRenderer();
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = _three.PCFSoftShadowMap;
@@ -717,12 +718,38 @@ const nebula_sphere_material = new _three.MeshBasicMaterial({
 });
 const nebula_sphere = new _three.Mesh(nebula_sphere_geo, nebula_sphere_material);
 scene.add(nebula_sphere);
-nebula_sphere.position.set(0, 15, 10);
+nebula_sphere.position.set(-10, 15, 10);
+nebula_sphere.castShadow = true;
+const liutenant_head_loader = new (0, _gltfloaderJs.GLTFLoader)();
+liutenant_head_loader.load(headURL.href, (gltf)=>{
+    const model = gltf.scene;
+    scene.add(model);
+    model.position.set(10, 15, 10);
+}, undefined, (error)=>{
+    console.error('Error loading model:', error);
+});
 const monkeyLoader = new (0, _gltfloaderJs.GLTFLoader)();
 monkeyLoader.load(monkeyUrl.href, (gltf)=>{
     const model = gltf.scene;
     scene.add(model);
-    model.position.set(12, 4, 10);
+    model.position.set(-5, 10, -12);
+    model.castShadow = true;
+    // Apply a material to the monkey model
+    model.traverse((child)=>{
+        if (child.isMesh) {
+            child.material = new _three.MeshStandardMaterial({
+                color: 0xff6600,
+                metalness: 0.5,
+                roughness: 0.5
+            });
+            child.castShadow = true;
+        }
+    });
+    function animateModel() {
+        requestAnimationFrame(animateModel);
+        model.rotation.y += 0.01; // Rotating around the Y-axis
+    }
+    animateModel();
 });
 const gui = new _datGui.GUI();
 const options = {
@@ -772,13 +799,19 @@ function Animate(time) {
     //link the scene with camera
     renderer.render(scene, camera);
 }
-renderer.setAnimationLoop(Animate); //==============NOTES================
+renderer.setAnimationLoop(Animate);
+window.addEventListener('resize', ()=>{
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+}) //==============NOTES================
  // The creation of an element of threejs have 3 phases:
  //     1. Creation of the geometry or the skeleton of the 3d shape
  // 2. Creation of the materials (basically skin, color of the element)
  // 3. Cover the geometry with the material
+;
 
-},{"three":"ktPTu","three/examples/jsm/controls/OrbitControls.js":"7mqRv","dat.gui":"k3xQk","../img/nebula.jpg":"ibF8l","../img/stars.jpg":"2IYlH","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","78e3d5acc9e999e3":"95RRe","three/examples/jsm/loaders/GLTFLoader.js":"dVRsF"}],"ktPTu":[function(require,module,exports,__globalThis) {
+},{"three":"ktPTu","three/examples/jsm/controls/OrbitControls.js":"7mqRv","dat.gui":"k3xQk","../img/nebula.jpg":"ibF8l","../img/stars.jpg":"2IYlH","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","78e3d5acc9e999e3":"95RRe","three/examples/jsm/loaders/GLTFLoader.js":"dVRsF","dcc313f816ceff2e":"BADrC"}],"ktPTu":[function(require,module,exports,__globalThis) {
 /**
  * @license
  * Copyright 2010-2025 Three.js Authors
@@ -39513,6 +39546,9 @@ function mergeGroups(geometry) {
     return resultGeometry;
 }
 
-},{"three":"ktPTu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["aDUUU","dV6cC"], "dV6cC", "parcelRequire94c2")
+},{"three":"ktPTu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"BADrC":[function(require,module,exports,__globalThis) {
+module.exports = require("6269223ac0711ec0").getBundleURL('2MSMO') + "lieutenantHead.ba0541ac.gltf" + "?" + Date.now();
+
+},{"6269223ac0711ec0":"lgJ39"}]},["aDUUU","dV6cC"], "dV6cC", "parcelRequire94c2")
 
 //# sourceMappingURL=index.e82f28a0.js.map

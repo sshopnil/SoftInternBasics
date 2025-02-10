@@ -7,7 +7,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 
 const monkeyUrl = new URL('../assets/monkey.glb', import.meta.url);
-
+const headURL = new URL('../assets/liutenant_head/lieutenantHead.gltf', import.meta.url);
 
 const renderer = new THREE.WebGLRenderer();
 
@@ -121,7 +121,7 @@ scene.add(ambientLight);
 const spotLight = new THREE.SpotLight( 0xffffff );
 spotLight.position.set( -100, 100, 0 );
 spotLight.decay = 0; //to get non physical lights
-spotLight.angle=0.2
+spotLight.angle=0.2;
 // spotLight.map = new THREE.TextureLoader().load( url );
 
 spotLight.castShadow = true;
@@ -164,14 +164,44 @@ const nebula_sphere_material = new THREE.MeshBasicMaterial({
 });
 const nebula_sphere = new THREE.Mesh(nebula_sphere_geo, nebula_sphere_material);
 scene.add(nebula_sphere);
-nebula_sphere.position.set(0, 15, 10);
+nebula_sphere.position.set(-10, 15, 10);
+nebula_sphere.castShadow = true;
 
+
+const liutenant_head_loader = new GLTFLoader();
+liutenant_head_loader.load(headURL.href, (gltf)=>{
+    const model = gltf.scene;
+    scene.add(model);
+    model.position.set(10, 15, 10);
+}, undefined, (error) => {
+    console.error('Error loading model:', error);
+})
 
 const monkeyLoader = new GLTFLoader();
 monkeyLoader.load(monkeyUrl.href, (gltf)=>{
     const model = gltf.scene;
     scene.add(model);
-    model.position.set(12, 4, 10);
+    model.position.set(-5, 10, -12);
+
+    model.castShadow = true;
+    // Apply a material to the monkey model
+    model.traverse((child) => {
+        if (child.isMesh) {
+            child.material = new THREE.MeshStandardMaterial({
+                color: 0xff6600, // Orange color
+                metalness: 0.5,
+                roughness: 0.5
+            });
+            child.castShadow = true;
+        }
+    });
+
+    function animateModel() {
+        requestAnimationFrame(animateModel);
+        model.rotation.y += 0.01; // Rotating around the Y-axis
+    }
+
+    animateModel();
 })
 
 
@@ -252,7 +282,11 @@ function Animate(time) {
 
 renderer.setAnimationLoop(Animate);
 
-
+window.addEventListener('resize', ()=>{
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+})
 
 
 

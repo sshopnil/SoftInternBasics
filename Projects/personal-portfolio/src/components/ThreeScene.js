@@ -2,8 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 const ThreeScene = () => {
     const mountRef = useRef(null); // Reference for the container
@@ -23,19 +22,17 @@ const ThreeScene = () => {
 
         // Camera setup
         let camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1000);
-        camera.position.set(0, 100, 200);
+        camera.position.set(0, 150, 300);
 
-
-        // controls
+        // Controls
         let controls = new OrbitControls(camera, renderer.domElement);
-        controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
+        controls.enableDamping = true;
         controls.dampingFactor = 0.05;
         controls.screenSpacePanning = true;
         controls.minDistance = 100;
         controls.maxDistance = 500;
         controls.maxPolarAngle = Math.PI / 1.5;
-        controls.target.set(0, 100, 0);
-
+        controls.target.set(0, 50, 0);
 
         // Lighting
         let light = new THREE.DirectionalLight(0xffffff, 1);
@@ -45,14 +42,17 @@ const ThreeScene = () => {
         // Ground
         let groundMesh = new THREE.Mesh(
             new THREE.PlaneGeometry(600, 600),
-            new THREE.MeshPhongMaterial({ color: 0xffffff, depthWrite: true })
+            new THREE.MeshPhongMaterial({ color: 0xffffff, depthWrite: true, side: THREE.DoubleSide})
         );
         groundMesh.rotation.x = -Math.PI / 2;
         scene.add(groundMesh);
 
+
+
         // Animation loop
         const animate = () => {
             requestAnimationFrame(animate);
+            controls.update(); // Update controls
             renderer.render(scene, camera);
         };
         animate();
@@ -63,8 +63,6 @@ const ThreeScene = () => {
             renderer.dispose();
         };
     }, []);
-
-
 
     return <div ref={mountRef} className="three-container" />;
 };

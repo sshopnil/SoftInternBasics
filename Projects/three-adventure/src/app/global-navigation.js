@@ -8,6 +8,7 @@ const navLinks = [
     { name: "Home", href: "/" },
     { name: "Cube Color", href: "/cubecolor" },
     { name: "Instancing", href: "/instancing" },
+    { name: "Painter", href: "/voxelpainter" },
 ];
 
 export default function GlobalNavigation() {

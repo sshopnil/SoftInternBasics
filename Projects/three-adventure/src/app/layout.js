@@ -1,6 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Scene } from "@/components/Scene";
+import GlobalNavigation from "./global-navigation";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,7 +25,10 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Scene>
-        {children}
+          <div className="absolute top-5 left-1/2 transform -translate-x-1/2 z-10 bg-white p-3 rounded-lg shadow-md">
+            <GlobalNavigation />
+          </div>
+          {children}
         </Scene>
       </body>
     </html>

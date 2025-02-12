@@ -28,7 +28,7 @@ export const Scene = ({ children }) => {
         // Set Initial Camera Position
         camera.position.z = 5;
 
-        scene.background = new THREE.Color(0xeeeeee);
+        scene.background = new THREE.Color(0xE0E0E0);
 
         // Controls
         let controls = new OrbitControls(camera, renderer.domElement);
@@ -47,7 +47,7 @@ export const Scene = ({ children }) => {
         animate();
 
         // Store Scene and Camera in Context
-        setSceneData({ scene, camera });
+        setSceneData({ scene, camera, renderer});
 
         // Cleanup
         return () => {

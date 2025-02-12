@@ -3,13 +3,19 @@
 import { useEffect, useState, useRef } from "react";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import Link from "next/link";  // Import Link from Next.js
+import { useRouter } from 'next/navigation';
+import Link from "next/link";
 
 const CoffeeModel = ({ scene, camera }) => {
+    const router = useRouter();
     const [showText, setShowText] = useState(false);
     const coffeeURL = new URL("../../models/coffee_cup.glb", import.meta.url);
-    
     const mousePosition = new THREE.Vector2();
+
+
+    
+
+
     const raycaster = new THREE.Raycaster();
     const coffeeRef = useRef(null); // Store reference to coffee model
 
@@ -34,8 +40,8 @@ const CoffeeModel = ({ scene, camera }) => {
 
                 // Load new model
                 const model = gltf.scene;
-                model.scale.set(40, 40, 40);
-                model.position.set(0, -600, 50);
+                model.scale.set(30, 30, 30);
+                model.position.set(0, -500, 50);
 
                 model.traverse((node) => {
                     if (node.isMesh) {
@@ -50,17 +56,14 @@ const CoffeeModel = ({ scene, camera }) => {
             undefined,
             (error) => console.error("Error loading model:", error)
         );
-
-        const handleMouseMove = (e) => {
+        window.addEventListener('mousemove', (e)=>{
             mousePosition.x = (e.clientX / window.innerWidth) * 2 - 1;
             mousePosition.y = -(e.clientY / window.innerHeight) * 2 + 1;
-        };
+        });
 
-        window.addEventListener("mousemove", handleMouseMove);
-
-        return () => {
-            window.removeEventListener("mousemove", handleMouseMove);
-        };
+        // return () => {
+        //     window.removeEventListener("mousemove", handleMouseMove);
+        // };
     }, [scene, camera]);
 
     useEffect(() => {
@@ -86,38 +89,6 @@ const CoffeeModel = ({ scene, camera }) => {
 
         animate(0);
     }, [scene, camera]);
-
-    return (
-        <>
-            {showText && (
-                <Link
-                    href="/buy-coffee" 
-                >
-                    <div
-                        style={{
-                            position: "absolute",
-                            top: "95%", // Move text lower
-                            left: "50%",
-                            transform: "translate(-50%, -50%)",
-                            color: "black",
-                            fontSize: "20px",
-                            background: "rgba(255, 255, 255, 0.9)",
-                            padding: "12px 15px",
-                            borderRadius: "12px",
-                            fontWeight: "bold",
-                            boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "8px",
-                            cursor: "pointer"
-                        }}
-                    >
-                        Buy Me a Coffee ☕
-                    </div>
-                </Link>
-            )}
-        </>
-    );
 };
 
 export default CoffeeModel;

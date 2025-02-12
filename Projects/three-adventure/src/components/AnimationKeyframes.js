@@ -11,7 +11,6 @@ import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment
 
 const VoxelSceneWithAnimation = () => {
   const statsRef = useRef(null);
-  const controlsRef = useRef(null);
   const sceneData = useScene();  // Use the custom hook to get scene, camera, and renderer
 
   useEffect(() => {
@@ -35,15 +34,9 @@ const VoxelSceneWithAnimation = () => {
 
     scene.environment = environment;
 
-    // Setup OrbitControls
-    controlsRef.current = new OrbitControls(camera, renderer.domElement);
-    controlsRef.current.target.set(0, 0.5, 0);
-    controlsRef.current.update();
-    controlsRef.current.enablePan = false;
-    controlsRef.current.enableDamping = true;
 
     const dracoLoader = new DRACOLoader();
-    dracoLoader.setDecoderPath("../../libs/jsm/decoder/draco/gltf/");
+    dracoLoader.setDecoderPath("libs/jsm/libs/draco/gltf/");
 
     const loader = new GLTFLoader();
     loader.setDRACOLoader(dracoLoader);
@@ -88,7 +81,6 @@ const VoxelSceneWithAnimation = () => {
     const animate = () => {
       const delta = clock.getDelta();
       if (mixer) mixer.update(delta);
-      controlsRef.current.update();
       statsRef.current.update();
       renderer.render(scene, camera);
     };
@@ -103,17 +95,12 @@ const VoxelSceneWithAnimation = () => {
         document.body.removeChild(statsRef.current.dom);
       }
 
-      // Remove OrbitControls and other event listeners
-      if (controlsRef.current) {
-        controlsRef.current.dispose();
-      }
-
       // Remove window resize listener
       window.removeEventListener("resize", handleResize);
     };
   }, [sceneData]);
 
-  return <div id="container" style={{ width: "100%", height: "100vh" }} />;
+  return null;
 };
 
 export default VoxelSceneWithAnimation;

@@ -15,6 +15,8 @@ const VoxelPainter = () => {
     const { scene, camera, renderer } = sceneData;
     if (!scene || !camera || !renderer) return;
 
+    camera.position.set(100, 100, 100);
+
     let plane, rollOverMesh, raycaster = new THREE.Raycaster(), pointer = new THREE.Vector2();
     let cubeGeo = new THREE.BoxGeometry(50, 50, 50);
     let cubeMaterial = new THREE.MeshLambertMaterial({ color: 0xfeb74c });

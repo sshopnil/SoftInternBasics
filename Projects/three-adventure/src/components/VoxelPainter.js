@@ -23,7 +23,7 @@ const VoxelPainter = () => {
     const objects = [];
     let isShiftDown = false;
 
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 3);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
     directionalLight.position.set(1, 0.75, 0.5).normalize();
     scene.add(directionalLight);
 
@@ -105,11 +105,11 @@ const VoxelPainter = () => {
     };
 
     const onDocumentKeyDown = (event) => {
-      if (event.key === "Shift") isShiftDown = true;
+      if (event.key === "shift") isShiftDown = true;
     };
 
     const onDocumentKeyUp = (event) => {
-      if (event.key === "Shift") isShiftDown = false;
+      if (event.key === "shift") isShiftDown = false;
     };
 
     const onWindowResize = () => {
@@ -132,13 +132,11 @@ const VoxelPainter = () => {
 
     // Cleanup
     return () => {
-      // Remove all objects added to the scene
       scene.remove(...objects);
       scene.remove(rollOverMesh);
       scene.remove(gridHelper);
       scene.remove(directionalLight);
 
-      // Remove event listeners
       document.removeEventListener("pointermove", onPointerMove);
       document.removeEventListener("pointerdown", onPointerDown);
       document.removeEventListener("keydown", onDocumentKeyDown);
